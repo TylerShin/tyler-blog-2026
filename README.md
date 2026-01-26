@@ -1,89 +1,181 @@
-![Astro Sphere Lighthouse Score](_astrosphere.jpg)
+# 📝 Tyler Blog
 
-Astro Sphere is a static, minimalist, lightweight, lightning fast portfolio and blog theme based on my personal website.
+> Astro 기반 블로그 + Obsidian CMS 워크플로우
 
-It is primarily Astro, Tailwind and Typescript, with a very small amount of SolidJS for stateful components.
+Astro로 구축된 정적 블로그를 Cloudflare Pages에 배포하고, Obsidian + Templater를 통해 CMS처럼 편리하게 글을 작성합니다.
 
-## 🚀 Deploy your own
+---
 
-[![Deploy with Vercel](_deploy_vercel.svg)](https://vercel.com/new/clone?repository-url=https://github.com/markhorn-dev/astro-sphere)  [![Deploy with Netlify](_deploy_netlify.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/markhorn-dev/astro-sphere)
+## ✨ 주요 특징
 
-## 📋 Features
+- 🚀 **Astro** - 빠른 정적 사이트 생성
+- 📓 **Obsidian** - 강력한 마크다운 에디터로 글 작성
+- 🤖 **Templater** - 자동화된 포스트 생성 템플릿
+- ☁️ **Cloudflare Pages** - 자동 배포
+- 📦 **Draft Mode** - 초안은 로컬에서만 보기
 
-- ✅ 100/100 Lighthouse performance
-- ✅ Responsive
-- ✅ Accessible
-- ✅ SEO-friendly
-- ✅ Typesafe
-- ✅ Minimal style
-- ✅ Light/Dark Theme
-- ✅ Animated UI
-- ✅ Tailwind styling
-- ✅ Auto generated sitemap
-- ✅ Auto generated RSS Feed
-- ✅ Markdown support
-- ✅ MDX Support (components in your markdown)
-- ✅ Searchable content (posts and projects)
-- ✅ Code Blocks - copy to clipboard
+---
 
-## 💯 Lighthouse score
-![Astro Sphere Lighthouse Score](_lighthouse.png)
+## 📋 요구사항
 
-## 🕊️ Lightweight
-All pages under 100kb (including fonts)
+- [Node.js](https://nodejs.org/) (LTS 권장)
+- `pnpm` 또는 `npm`
+- [Obsidian Desktop](https://obsidian.md/)
+- **필수 플러그인**: [Templater](https://github.com/SilentVoid13/Templater)
 
-## ⚡︎ Fast
-Rendered in ~40ms on localhost
+---
 
-## 📄 Configuration
+## 📂 프로젝트 구조
 
-The blog posts on the demo serve as the documentation and configuration.
+```
+tyler-blog/
+├── src/
+│   └── content/
+│       └── blog/          # 📄 블로그 포스트 (.md)
+├── public/
+│   └── images/            # 🖼️ 이미지/첨부파일
+├── _templates/            # 📋 Templater 템플릿
+└── .obsidian/             # ⚙️ Obsidian 설정 (레포 포함)
+```
 
-## 💻 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## 🚀 빠른 시작
 
-Replace npm with your package manager of choice. `npm`, `pnpm`, `yarn`, `bun`, etc
+### 1⃣ 로컬 개발 서버 실행
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run dev:network`     | Starts dev server on local network               |
-| `npm run sync`            | Generates TypeScript types for all Astro modules.|
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run preview:network` | Starts preview server on local network           |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-| `npm run lint`            | Run ESLint                                       |
-| `npm run lint:fix`        | Auto-fix ESLint issues                           |
+```bash
+npm run dev
+```
 
-## 🗺️ Roadmap
+---
 
-A few features I plan to implement
-- ⬜ Article Pages - Table of Contents
-- ⬜ Article Pages - Share on social media
+## 🔧 Obsidian 설정
 
-## ✨ Acknowledgement
+### 📁 Vault 열기
 
-Theme inspired by [Paco Coursey](https://paco.me/), [Lee Robinson](https://leerob.io/) and [Hayden Bleasel](https://www.haydenbleasel.com/)
+1. **Obsidian** 실행
+2. **"Open folder as vault"** 선택
+3. 이 프로젝트 **루트 폴더**를 Vault로 열기
+   - ✅ `.obsidian/` 폴더가 보이면 성공
 
+### 🔌 Community Plugins 활성화
 
-## 🏛️ License
+1. `Settings` → `Community plugins`
+2. **Restricted mode** 비활성화
+3. 플러그인 사용 허용
 
-MIT
+### 📝 새 글(노트) 생성 위치 설정
 
+**Settings** → **Files & Links**
 
-# 1.0.1 Update
+```
+Default location for new notes: src/content/blog
+```
 
-Added ability to run dev and preview on local network.
-added npm run dev:network
-added npm run preview:network
+### 🖼️ 첨부파일(이미지) 위치 설정
 
-Added slightly more particle density in both light and dark mode.
+**Settings** → **Files & Links**
 
-Added subtle dark mode star and meteor animations.
+```
+Default location for new attachments: In the folder specified below
+Attachment folder path: public/images
+```
 
-Removed eslint config
+> 💡 이렇게 설정하면 `/images/...` 경로로 이미지 링크가 자동 생성되어 배포 시 안전합니다.
 
+### 🔗 Wikilink 비활성화 (권장)
+
+**Settings** → **Files & Links**
+
+```
+Use [[Wikilinks]]: ❌ OFF
+```
+
+> 💡 블로그 마크다운 호환성을 위해 일반 Markdown 링크 사용을 권장합니다.
+
+---
+
+## ✍️ 글 쓰기 워크플로우
+
+### 1⃣ 새 포스트 생성
+
+1. `src/content/blog/`에서 **새 노트** 생성 (임시 이름 OK)
+2. **Command Palette** (`Ctrl/Cmd + P`) 실행
+3. `Templater: Insert template` 선택
+4. `_templates/new-post.md` 선택
+5. 프롬프트에 따라 입력:
+   - **slug**: 포스트 URL 경로
+   - **title**: 포스트 제목
+
+#### 자동으로 생성되는 것들
+
+- ✅ 파일명: `YYYY-MM-DD-slug.md`
+- ✅ Frontmatter 자동 작성
+- ✅ 초안 모드: `draft: true`
+
+### 2⃣ 포스트 발행
+
+1. Frontmatter에서 `draft: false`로 변경
+2. Git commit & push
+3. 배포된 사이트에서 확인
+
+---
+
+## ☁️ 배포 (Cloudflare Pages)
+
+### 설정
+
+Cloudflare Pages에서 이 Git 레포를 연결합니다.
+
+| 설정 항목 | 값 |
+|---------|-----|
+| **Build command** | `pnpm build` (또는 `npm run build`) |
+| **Build output directory** | `dist` |
+
+---
+
+## 🔐 Git 및 Obsidian 설정
+
+### `.obsidian/` 폴더 관리
+
+이 레포는 `.obsidian/`을 커밋하여 팀/기기 간 동일한 작성 경험을 재현합니다.
+
+다만, 개인 작업공간 파일은 `.gitignore`로 제외합니다:
+
+```gitignore
+.obsidian/workspace*
+.obsidian/cache/
+.obsidian/logs/
+```
+
+---
+
+## 🐛 트러블슈팅
+
+### ❌ 템플릿 폴더를 못 찾는 경우
+
+- `_templates/` 폴더가 레포 루트에 있는지 확인
+- **Templater 설정**에서 `Template folder location`이 `_templates`로 되어 있는지 확인
+
+### ❌ 글이 사이트에 안 보이는 경우
+
+- `draft: true`인 글은 로컬에서만 보입니다
+- 발행하려면 `draft: false`로 변경 후 빌드/배포
+
+---
+
+## 📚 참고 자료
+
+- [Astro Documentation](https://docs.astro.build/)
+- [Obsidian Help](https://help.obsidian.md/)
+- [Templater Documentation](https://silentvoid13.github.io/Templater/)
+- [Cloudflare Pages Docs](https://developers.cloudflare.com/pages/)
+
+---
+
+<div align="center">
+
+**Made with ❤️ using Astro & Obsidian**
+
+</div>
