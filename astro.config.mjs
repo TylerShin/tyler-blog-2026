@@ -6,6 +6,7 @@ import solidJs from "@astrojs/solid-js"
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astro-sphere-demo.vercel.app",
+  // TODO: 도메인 이전 완료 후 blog.millsh.in 으로 변경
+  site: "https://tyler-blog-2026.pages.dev",
   integrations: [mdx(), sitemap(), solidJs(), tailwind({ applyBaseStyles: false })],
 })
