@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
 import ArrowCard from "@components/ArrowCard"
-import StackCard from "@components/StackCard.astro"
 import { SITE, SOCIALS } from "@consts"
 import TwinklingStars from "@components/TwinklingStars.astro"
 import MeteorShower from "@components/MeteorShower.astro"
@@ -17,28 +16,7 @@ const projects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0,3)
 
-const stack = [
-  { 
-    text: "React", 
-    icon: "react", 
-    href: "https://react.dev" 
-  },
-  { 
-    text: "TypeScript", 
-    icon: "typescript", 
-    href: "https://www.typescriptlang.org" 
-  },
-  { 
-    text: "Next.js", 
-    icon: "nextjs", 
-    href: "https://nextjs.org" 
-  },
-  { 
-    text: "Tailwind", 
-    icon: "tailwind", 
-    href: "https://tailwindcss.com" 
-  },
-]
+
 ---
 
 <PageLayout title="홈" description={SITE.DESCRIPTION}>
@@ -95,6 +73,9 @@ const stack = [
             <a href='/work' class='py-2 px-4 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend'>
               View Work
             </a>
+            <a href='https://github.com/TylerShin' target='_blank' class='py-2 px-4 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend'>
+              GitHub
+            </a>
           </div>
         </div>
       </div>
@@ -107,9 +88,8 @@ const stack = [
       <!-- About Section -->
       <section class="animate">
         <article>
-          <p>저는 <b><i>프론트엔드 엔지니어</i></b>입니다. 현재 <b><i>당근</i></b>에서 사용자들이 더 좋은 경험을 할 수 있도록 제품을 만들고 있습니다.</p>
-          <p>복잡한 문제를 우아하게 해결하는 것을 좋아하고, 사용자 경험을 최우선으로 생각합니다. 특히 React, TypeScript, 그리고 모던 프론트엔드 생태계에 관심이 많습니다.</p>
-          <p>이 블로그에서는 개발하면서 배운 것들, 기술적인 고민들, 그리고 일상을 기록합니다.</p>
+          <p>이 블로그에는 제가 좋아하는 것들에 대한 글을 올립니다.</p>
+          <p>개발하면서 배운 것들, 기술적인 고민들, 그리고 일상을 기록합니다.</p>
         </article>
       </section>
 
@@ -133,24 +113,6 @@ const stack = [
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <!-- Tech Stack Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <p class="font-semibold text-black dark:text-white">
-            Tech Stack
-          </p>
-          <div class="flex flex-wrap items-center gap-2 mt-5">
-            {stack.map(item => (
-              <StackCard 
-                text={item.text}
-                icon={item.icon}
-                href={item.href}
-              />
-            ))}
-          </div>
         </div>
       </section>
 
