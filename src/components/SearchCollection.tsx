@@ -5,10 +5,14 @@ import ArrowCard from "@components/ArrowCard"
 import { cn } from "@lib/utils"
 import SearchBar from "@components/SearchBar"
 
+// Flexible type that allows CollectionEntry with potentially modified slug
+type BlogPostEntry = Omit<CollectionEntry<"blog">, "slug"> & { slug: string }
+type ProjectEntry = Omit<CollectionEntry<"projects">, "slug"> & { slug: string }
+
 type Props = {
   entry_name: string
   tags: string[]
-  data: CollectionEntry<"blog">[] | CollectionEntry<'projects'>[]
+  data: BlogPostEntry[] | ProjectEntry[]
 }
 
 export default function SearchCollection({ entry_name, data, tags }: Props) {

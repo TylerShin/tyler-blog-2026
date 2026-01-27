@@ -3,6 +3,7 @@ title: "Linux 카카오톡 설치 및 한글 설정 (ulagbulag/kakaotalk)"
 summary: "Linux 환경에서 카카오톡 설치 및 한글 설정 방법 정리."
 date: 2026-01-27
 tags: ["Linux", "Arch", "KakaoTalk", "카카오톡"]
+lang: ko
 ---
 
 ## TL;DR

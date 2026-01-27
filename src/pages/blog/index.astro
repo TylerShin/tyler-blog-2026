@@ -1,16 +1,28 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import TopLayout from "@layouts/TopLayout.astro";
 import BottomLayout from "@layouts/BottomLayout.astro";
 import SearchCollection from "@components/SearchCollection";
 import { BLOG } from "@consts";
+import { DEFAULT_LOCALE, getLocaleFromSlug } from "@lib/i18n";
 
-const posts = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
+// Get only posts for the default locale (ko)
+const allPosts = await getCollection("blog");
+const filteredPosts = allPosts
+  .filter(
+    (post): post is CollectionEntry<"blog"> =>
+      !post.data.draft && getLocaleFromSlug(post.slug) === DEFAULT_LOCALE,
+  )
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort(
+// Map to override slug for URLs
+const posts = filteredPosts.map((post) => ({
+  ...post,
+  slug: post.slug.replace(/^ko\//, "") as CollectionEntry<"blog">["slug"],
+}));
+
+const tags = [...new Set(filteredPosts.flatMap((post) => post.data.tags))].sort(
   (a, b) => a.localeCompare(b),
 );
 

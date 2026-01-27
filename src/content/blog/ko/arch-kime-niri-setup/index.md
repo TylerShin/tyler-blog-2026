@@ -3,6 +3,7 @@ title: "Arch(CachyOS) niri kime 입력기 설정"
 summary: "Arch Linux(CachyOS)에서 niri와 kime 한글 입력기 설정 방법 정리."
 date: 2026-01-23
 tags: ["Linux", "Arch", "CachyOS", "kime", "niri"]
+lang: ko
 ---
 
 ## TL;DR

@@ -1,0 +1,73 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import SearchCollection from "@components/SearchCollection";
+import { getLocaleFromSlug } from "@lib/i18n";
+
+const locale = "en";
+
+// Get only posts for English locale
+const allPosts = await getCollection("blog");
+const posts = allPosts
+    .filter(
+        (post) => !post.data.draft && getLocaleFromSlug(post.slug) === locale,
+    )
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .map((post) => ({
+        ...post,
+        // Remove locale prefix for URL generation
+        slug: post.slug.replace(/^en\//, ""),
+    }));
+
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort(
+    (a, b) => a.localeCompare(b),
+);
+
+const estimated_initial_size =
+    28 + posts.length * 158 + (posts.length - 1) * 12;
+
+const BLOG_EN = {
+    TITLE: "Blog",
+    DESCRIPTION: "Posts about development and technology.",
+};
+---
+
+<PageLayout title={BLOG_EN.TITLE} description={BLOG_EN.DESCRIPTION} lang="en">
+    <TopLayout>
+        <div class="animate">
+            <h1 class="text-3xl font-semibold text-black dark:text-white mt-2">
+                {BLOG_EN.TITLE}
+            </h1>
+            <div class="mt-1">
+                {BLOG_EN.DESCRIPTION}
+            </div>
+        </div>
+    </TopLayout>
+    <BottomLayout>
+        {
+            posts.length > 0 ? (
+                <div
+                    id="search-collection-wrapper"
+                    class="animate"
+                    style={{ minHeight: `${estimated_initial_size}px` }}
+                >
+                    <SearchCollection
+                        client:load
+                        entry_name={"posts"}
+                        tags={tags}
+                        data={posts}
+                    />
+                </div>
+            ) : (
+                <div class="animate text-center py-12 text-gray-500">
+                    <p>No English posts available yet.</p>
+                    <a href="/blog" class="underline mt-2 inline-block">
+                        View posts in Korean →
+                    </a>
+                </div>
+            )
+        }
+    </BottomLayout>
+</PageLayout>

@@ -18,6 +18,9 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()),
     draft: z.boolean().optional(),
+    // i18n support
+    lang: z.enum(["ko", "en"]).default("ko"),
+    translationKey: z.string().optional(), // shared key to link translated posts
   }),
 })
 

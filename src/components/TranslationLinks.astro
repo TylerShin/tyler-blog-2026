@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { LOCALE_LABELS, type Locale, getSlugWithoutLocale } from "@lib/i18n";
+
+interface Props {
+    translations: Record<Locale, CollectionEntry<"blog">>;
+    currentLocale: Locale;
+}
+
+const { translations, currentLocale } = Astro.props;
+const otherTranslations = Object.entries(translations).filter(
+    ([locale]) => locale !== currentLocale,
+);
+
+const langFlags: Record<Locale, string> = {
+    ko: "🇰🇷",
+    en: "🇺🇸",
+};
+
+function getPostUrl(locale: Locale, slug: string): string {
+    const cleanSlug = getSlugWithoutLocale(slug);
+    if (locale === "ko") {
+        return `/blog/${cleanSlug}`;
+    }
+    return `/${locale}/blog/${cleanSlug}`;
+}
+---
+
+{
+    otherTranslations.length > 0 && (
+        <div class="flex items-center gap-3 py-3 px-4 mt-4 rounded-lg bg-black/5 dark:bg-white/5">
+            <svg
+                class="size-4 text-gray-500 dark:text-gray-400 flex-shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+                />
+            </svg>
+            <span class="text-sm text-gray-600 dark:text-gray-400">
+                {currentLocale === "ko"
+                    ? "다른 언어로 읽기:"
+                    : "Read in other language:"}
+                {otherTranslations.map(([locale, post], i) => (
+                    <>
+                        <a
+                            href={getPostUrl(locale as Locale, post.slug)}
+                            class="inline-flex items-center gap-1 ml-2 underline underline-offset-2 hover:text-black dark:hover:text-white transition-colors"
+                        >
+                            <span>{langFlags[locale as Locale]}</span>
+                            <span>{LOCALE_LABELS[locale as Locale]}</span>
+                        </a>
+                        {i < otherTranslations.length - 1 && (
+                            <span class="mx-1">|</span>
+                        )}
+                    </>
+                ))}
+            </span>
+        </div>
+    )
+}

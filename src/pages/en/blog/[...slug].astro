@@ -1,0 +1,48 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import ArticleTopLayout from "@layouts/ArticleTopLayout.astro";
+import ArticleBottomLayout from "@layouts/ArticleBottomLayout.astro";
+import TranslationLinks from "@components/TranslationLinks.astro";
+import { getLocaleFromSlug, getTranslations } from "@lib/i18n";
+
+const locale = "en";
+
+// Create the static blog pages for English locale
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    // Only generate pages for English locale posts
+    return posts
+        .filter((post) => getLocaleFromSlug(post.slug) === "en")
+        .map((post) => ({
+            // Remove locale prefix from URL slug
+            params: { slug: post.slug.replace(/^en\//, "") },
+            props: { post },
+        }));
+}
+
+// Get the requested post
+interface Props {
+    post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, summary } = post.data;
+const translations = await getTranslations(post);
+---
+
+<PageLayout title={title} description={summary} lang="en">
+    <TopLayout>
+        <div class="animate">
+            <ArticleTopLayout entry={post} />
+            <TranslationLinks translations={translations} currentLocale="en" />
+        </div>
+    </TopLayout>
+    <BottomLayout>
+        <div class="animate">
+            <ArticleBottomLayout entry={post} />
+        </div>
+    </BottomLayout>
+</PageLayout>

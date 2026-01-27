@@ -1,30 +1,45 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content"
-import PageLayout from "@layouts/PageLayout.astro"
-import TopLayout from "@layouts/TopLayout.astro"
-import BottomLayout from "@layouts/BottomLayout.astro"
-import ArticleTopLayout from "@layouts/ArticleTopLayout.astro"
-import ArticleBottomLayout from "@layouts/ArticleBottomLayout.astro"
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import ArticleTopLayout from "@layouts/ArticleTopLayout.astro";
+import ArticleBottomLayout from "@layouts/ArticleBottomLayout.astro";
+import TranslationLinks from "@components/TranslationLinks.astro";
+import { DEFAULT_LOCALE, getLocaleFromSlug, getTranslations } from "@lib/i18n";
 
-// Create the static blog pages
+// Create the static blog pages for default locale (ko)
 export async function getStaticPaths() {
-	const posts = await getCollection("blog")
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}))
+  const posts = await getCollection("blog");
+  // Only generate pages for default locale posts
+  return posts
+    .filter((post) => getLocaleFromSlug(post.slug) === DEFAULT_LOCALE)
+    .map((post) => ({
+      // Remove locale prefix from URL slug for default locale
+      params: { slug: post.slug.replace(/^ko\//, "") },
+      props: { post },
+    }));
 }
 
 // Get the requested post
-type Props = CollectionEntry<"blog">
-const post = Astro.props
-const { title, summary } = post.data
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, summary, lang } = post.data;
+const translations = await getTranslations(post);
+const currentLocale = lang || DEFAULT_LOCALE;
 ---
 
-<PageLayout title={title} description={summary}>
+<PageLayout title={title} description={summary} lang={currentLocale}>
   <TopLayout>
     <div class="animate">
-      <ArticleTopLayout entry={post}/>
+      <ArticleTopLayout entry={post} />
+      <TranslationLinks
+        translations={translations}
+        currentLocale={currentLocale}
+      />
     </div>
   </TopLayout>
   <BottomLayout>

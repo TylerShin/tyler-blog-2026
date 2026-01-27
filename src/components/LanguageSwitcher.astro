@@ -1,0 +1,67 @@
+---
+import {
+    LOCALE_LABELS,
+    type Locale,
+    SUPPORTED_LOCALES,
+    getLocaleFromPath,
+} from "@lib/i18n";
+
+const currentPath = Astro.url.pathname;
+const currentLocale = getLocaleFromPath(currentPath);
+
+// Generate URLs for language switching
+function getLocalizedPath(targetLocale: Locale): string {
+    const pathWithoutLocale = currentPath.replace(/^\/(en|ko)\//, "/");
+
+    if (targetLocale === "ko") {
+        return pathWithoutLocale;
+    }
+    return `/${targetLocale}${pathWithoutLocale}`;
+}
+---
+
+<div class="relative inline-block">
+    <select
+        id="language-select"
+        class="appearance-none bg-transparent border-none text-current cursor-pointer pr-5 text-sm focus:outline-none hover:opacity-70 transition-opacity"
+        aria-label="Select language"
+    >
+        {
+            SUPPORTED_LOCALES.map((locale) => (
+                <option
+                    value={getLocalizedPath(locale)}
+                    selected={locale === currentLocale}
+                    class="bg-white dark:bg-neutral-900 text-black dark:text-white"
+                >
+                    {LOCALE_LABELS[locale]}
+                </option>
+            ))
+        }
+    </select>
+    <svg
+        class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none size-4 stroke-current"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="2"
+    >
+        <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"
+        ></path>
+    </svg>
+</div>
+
+<script is:inline>
+    function initLanguageSelect() {
+        const select = document.getElementById("language-select");
+        if (select) {
+            select.addEventListener("change", (e) => {
+                const target = e.target;
+                if (target && target.value) {
+                    window.location.href = target.value;
+                }
+            });
+        }
+    }
+
+    document.addEventListener("astro:after-swap", initLanguageSelect);
+    initLanguageSelect();
+</script>
