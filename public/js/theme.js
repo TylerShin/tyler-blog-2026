@@ -35,7 +35,8 @@ function preloadTheme() {
     if (userTheme === "light" || userTheme === "dark") {
       return userTheme
     } else {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      // return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      return "dark"
     }
   })()
 
@@ -56,8 +57,8 @@ window.onload = () => {
     const drawerThemeButton = document.getElementById("drawer-theme-button")
     headerThemeButton?.addEventListener("click", changeTheme)
     drawerThemeButton?.addEventListener("click", changeTheme)
-  } 
-  
+  }
+
   document.addEventListener("astro:after-swap", initializeThemeButtons)
   initializeThemeButtons()
 }

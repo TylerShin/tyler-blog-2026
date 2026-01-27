@@ -168,11 +168,3 @@ article img {
   opacity: 0;
   transform: translateY(10px);
 } */
-
-/**
- * Custom Utilities
- */
-.mask-radial-faded {
-  mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
-}
