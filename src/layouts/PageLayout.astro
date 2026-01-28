@@ -20,6 +20,20 @@ const { title, description, lang = DEFAULT_LOCALE } = Astro.props;
 <html lang={lang}>
   <head>
     <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
+    {
+      import.meta.env.PROD && (
+        <>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZHVDF115D"></script>
+          <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-9ZHVDF115D');
+          </script>
+        </>
+      )
+    }
   </head>
   <body>
     <Header />
