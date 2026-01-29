@@ -7,7 +7,7 @@ import solidJs from "@astrojs/solid-js"
 // https://astro.build/config
 export default defineConfig({
   // TODO: 도메인 이전 완료 후 blog.millsh.in 으로 변경
-  site: "https://blog.millsh.in",
+  site: "https://millsh.in",
   i18n: {
     locales: ["ko", "en"],
     defaultLocale: "ko",
