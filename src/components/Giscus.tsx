@@ -40,6 +40,25 @@ export default function Giscus(props: Props) {
       container.innerHTML = ""
       container.appendChild(script)
     }
+
+    // Listen for theme changes to update Giscus theme
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          const isDark = document.documentElement.classList.contains("dark")
+          const theme = isDark ? "dark" : "light"
+          const iframe = document.querySelector<HTMLIFrameElement>("iframe.giscus-frame")
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(
+              { giscus: { setConfig: { theme } } },
+              "https://giscus.app"
+            )
+          }
+        }
+      })
+    })
+
+    observer.observe(document.documentElement, { attributes: true })
   })
 
   return <div id="giscus-container" class="mt-16" />
