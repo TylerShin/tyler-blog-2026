@@ -1,4 +1,4 @@
-import { onMount } from "solid-js"
+import { onMount, onCleanup } from "solid-js"
 
 type Props = {
   repo?: string
@@ -18,6 +18,11 @@ type Props = {
 
 export default function Giscus(props: Props) {
   onMount(() => {
+    const getTheme = () => {
+      const isDark = document.documentElement.classList.contains("dark")
+      return isDark ? "dark" : "light"
+    }
+
     const script = document.createElement("script")
     script.src = "https://giscus.app/client.js"
     script.setAttribute("data-repo", props.repo || "TylerShin/tyler-blog-2026")
@@ -29,7 +34,7 @@ export default function Giscus(props: Props) {
     script.setAttribute("data-reactions-enabled", props.reactionsEnabled || "1")
     script.setAttribute("data-emit-metadata", props.emitMetadata || "0")
     script.setAttribute("data-input-position", props.inputPosition || "bottom")
-    script.setAttribute("data-theme", props.theme || "preferred_color_scheme")
+    script.setAttribute("data-theme", props.theme || getTheme())
     script.setAttribute("data-lang", props.lang || "ko")
     script.setAttribute("data-loading", props.loading || "lazy")
     script.crossOrigin = "anonymous"
@@ -45,8 +50,7 @@ export default function Giscus(props: Props) {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === "attributes" && mutation.attributeName === "class") {
-          const isDark = document.documentElement.classList.contains("dark")
-          const theme = isDark ? "dark" : "light"
+          const theme = getTheme()
           const iframe = document.querySelector<HTMLIFrameElement>("iframe.giscus-frame")
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage(
@@ -59,6 +63,10 @@ export default function Giscus(props: Props) {
     })
 
     observer.observe(document.documentElement, { attributes: true })
+
+    onCleanup(() => {
+      observer.disconnect()
+    })
   })
 
   return <div id="giscus-container" class="mt-16" />
