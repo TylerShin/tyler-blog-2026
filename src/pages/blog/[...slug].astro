@@ -27,12 +27,17 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, summary, lang } = post.data;
+const { title, summary, lang, heroImage } = post.data;
 const translations = await getTranslations(post);
 const currentLocale = lang || DEFAULT_LOCALE;
 ---
 
-<PageLayout title={title} description={summary} lang={currentLocale}>
+<PageLayout
+  title={title}
+  description={summary}
+  lang={currentLocale}
+  image={heroImage}
+>
   <TopLayout>
     <div class="animate">
       <ArticleTopLayout entry={post} />

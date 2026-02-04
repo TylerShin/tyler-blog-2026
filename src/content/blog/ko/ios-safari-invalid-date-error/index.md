@@ -5,6 +5,8 @@ date: 2026-02-04
 tags: ["iOS", "Safari", "Troubleshooting", "Web"]
 lang: ko
 translationKey: "ios-safari-invalid-date-error"
+heroImage: "/assets/blog/ios-safari-invalid-date-error/hero.png"
+heroImageAlt: "A clean and modern abstract representation of code debugging"
 ---
 
 ## TL;DR

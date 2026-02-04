@@ -1,8 +1,10 @@
 ---
-title: "The \"Invalid Date\" Trap in iOS Safari"
-summary: "Why iOS Safari throws Invalid Date (Invalid time value) errors while Chrome doesn't, and how to fix it."
-date: 2026-02-04
-tags: ["iOS", "Safari", "Troubleshooting", "Web"]
+title: "Invalid time value error in date-fns v4 on iOS Safari"
+summary: "A guide to resolving the 'Invalid time value' error encountered when using date-fns v4 in iOS Safari."
+date: "2024-06-15" 
+tags: ["iOS", "Safari", "date-fns", "JavaScript", "bug fix"]
+heroImage: "/assets/blog/ios-safari-invalid-date-error/hero.png"
+heroImageAlt: "A clean and modern abstract representation of code debugging"
 lang: en
 translationKey: "ios-safari-invalid-date-error"
 ---

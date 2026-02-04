@@ -29,11 +29,11 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, summary } = post.data;
+const { title, summary, heroImage } = post.data;
 const translations = await getTranslations(post);
 ---
 
-<PageLayout title={title} description={summary} lang="en">
+<PageLayout title={title} description={summary} lang="en" image={heroImage}>
     <TopLayout>
         <div class="animate">
             <ArticleTopLayout entry={post} />

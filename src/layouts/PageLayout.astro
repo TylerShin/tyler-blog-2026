@@ -11,15 +11,16 @@ interface Props {
   title: string;
   description: string;
   lang?: Locale;
+  image?: string;
 }
 
-const { title, description, lang = DEFAULT_LOCALE } = Astro.props;
+const { title, description, lang = DEFAULT_LOCALE, image } = Astro.props;
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
-    <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
+    <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} image={image} />
     {
       import.meta.env.PROD && (
         <>

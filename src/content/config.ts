@@ -21,6 +21,8 @@ const blog = defineCollection({
     // i18n support
     lang: z.enum(["ko", "en"]).default("ko"),
     translationKey: z.string().optional(), // shared key to link translated posts
+    heroImage: z.string().optional(),
+    heroImageAlt: z.string().optional(),
   }),
 })
 
