@@ -1,0 +1,82 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import { GEAR_EN } from "@consts";
+
+const allGear = await getCollection("gear");
+const collection = allGear.filter((item) => {
+    const lang = item.data.lang || "ko";
+    return lang === "en";
+});
+
+collection.sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+
+const gear = await Promise.all(
+    collection.map(async (item) => {
+        const { Content } = await item.render();
+        return { ...item, Content };
+    }),
+);
+
+function formatWorkDate(input: Date | string) {
+    if (typeof input === "string") return input;
+
+    const month = input.toLocaleDateString("en-US", {
+        month: "short",
+    });
+
+    const year = new Date(input).getFullYear();
+    return `${month} ${year}`;
+}
+---
+
+<PageLayout title={GEAR_EN.TITLE} description={GEAR_EN.DESCRIPTION} lang="en">
+    <TopLayout>
+        <div class="animate page-heading">
+            {GEAR_EN.TITLE}
+        </div>
+    </TopLayout>
+    <BottomLayout>
+        <ul>
+            {
+                gear.map((entry) => (
+                    <li class="animate border-b border-black/10 dark:border-white/25 mt-4 py-8 first-of-type:mt-0 first-of-type:pt-0 last-of-type:border-none">
+                        <div class="text-sm uppercase mb-4 flex gap-2">
+                            <span>{formatWorkDate(entry.data.date)}</span>
+                            {entry.data.rating && (
+                                <>
+                                    <span class="text-black/50 dark:text-white/50">
+                                        •
+                                    </span>
+                                    <span>★ {entry.data.rating}</span>
+                                </>
+                            )}
+                        </div>
+                        <div class="text-black dark:text-white font-semibold text-lg">
+                            {entry.data.title}
+                        </div>
+                        <div class="text-sm font-semibold mt-1 text-black/80 dark:text-white/80">
+                            {entry.data.summary}
+                        </div>
+                        {entry.data.thumbnail && (
+                            <div class="mt-4 rounded-lg overflow-hidden border border-black/10 dark:border-white/10">
+                                <img
+                                    src={entry.data.thumbnail}
+                                    alt={entry.data.title}
+                                    class="w-full h-auto object-cover"
+                                />
+                            </div>
+                        )}
+                        <article class="prose dark:prose-invert mt-4">
+                            <entry.Content />
+                        </article>
+                    </li>
+                ))
+            }
+        </ul>
+    </BottomLayout>
+</PageLayout>

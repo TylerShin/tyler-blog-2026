@@ -44,11 +44,15 @@ export async function getPostsByLocale(locale: Locale) {
 /**
  * Find translations of a post by translationKey
  */
-export async function getTranslations(
-  post: CollectionEntry<"blog">
-): Promise<Record<Locale, CollectionEntry<"blog">>> {
-  const allPosts = await getCollection("blog")
-  const translations: Partial<Record<Locale, CollectionEntry<"blog">>> = {}
+/**
+ * Find translations of a post by translationKey
+ */
+export async function getTranslations<C extends "blog" | "picks" | "gear">(
+  post: CollectionEntry<C>
+): Promise<Record<Locale, CollectionEntry<C>>> {
+    // @ts-ignore
+  const allPosts = await getCollection(post.collection)
+  const translations: Partial<Record<Locale, CollectionEntry<C>>> = {}
 
   // Current post
   const currentLocale = post.data.lang || getLocaleFromSlug(post.slug)
@@ -62,12 +66,12 @@ export async function getTranslations(
         otherPost.slug !== post.slug
       ) {
         const locale = otherPost.data.lang || getLocaleFromSlug(otherPost.slug)
-        translations[locale] = otherPost
+        translations[locale] = otherPost as CollectionEntry<C>
       }
     }
   }
 
-  return translations as Record<Locale, CollectionEntry<"blog">>
+  return translations as Record<Locale, CollectionEntry<C>>
 }
 
 /**

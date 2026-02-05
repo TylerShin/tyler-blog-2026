@@ -47,4 +47,31 @@ const legal = defineCollection({
   }),
 })
 
-export const collections = { work, blog, projects, legal }
+const picks = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    type: z.enum(["book", "video", "article", "general"]),
+    description: z.string().optional(),
+    url: z.string().optional(),
+    lang: z.enum(["ko", "en"]).default("ko"),
+    translationKey: z.string().optional(),
+    thumbnail: z.string().optional(),
+  }),
+})
+
+const gear = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string(),
+    rating: z.union([z.number(), z.string()]).optional(),
+    lang: z.enum(["ko", "en"]).default("ko"),
+    translationKey: z.string().optional(),
+    thumbnail: z.string().optional(),
+  }),
+})
+
+export const collections = { work, blog, projects, legal, picks, gear }

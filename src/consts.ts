@@ -31,6 +31,28 @@ export const SEARCH: Page = {
   DESCRIPTION: "글과 프로젝트를 검색하세요.",
 }
 
+// Picks Page
+export const PICKS: Page = {
+  TITLE: "Picks",
+  DESCRIPTION: "읽고 본 것들에 대한 기록입니다.",
+}
+
+export const PICKS_EN: Page = {
+  TITLE: "Picks",
+  DESCRIPTION: "Curated list of books, videos, and articles.",
+}
+
+// Gear Page
+export const GEAR: Page = {
+  TITLE: "Gear",
+  DESCRIPTION: "사용하는 장비들에 대한 리뷰입니다.",
+}
+
+export const GEAR_EN: Page = {
+  TITLE: "Gear",
+  DESCRIPTION: "Reviews of gear I use.",
+}
+
 // Links
 export const LINKS: Links = [
   {
@@ -44,6 +66,14 @@ export const LINKS: Links = [
   {
     TEXT: "Blog",
     HREF: "/blog",
+  },
+  {
+    TEXT: "Picks",
+    HREF: "/picks",
+  },
+  {
+    TEXT: "Gear",
+    HREF: "/gear",
   },
   // {
   //   TEXT: "Projects",

@@ -3,7 +3,12 @@ import type { CollectionEntry } from "astro:content";
 import { LOCALE_LABELS, type Locale, getSlugWithoutLocale } from "@lib/i18n";
 
 interface Props {
-    translations: Record<Locale, CollectionEntry<"blog">>;
+    translations: Record<
+        Locale,
+        | CollectionEntry<"blog">
+        | CollectionEntry<"picks">
+        | CollectionEntry<"gear">
+    >;
     currentLocale: Locale;
 }
 
@@ -17,12 +22,12 @@ const langFlags: Record<Locale, string> = {
     en: "🇺🇸",
 };
 
-function getPostUrl(locale: Locale, slug: string): string {
+function getPostUrl(locale: Locale, slug: string, collection: string): string {
     const cleanSlug = getSlugWithoutLocale(slug);
     if (locale === "ko") {
-        return `/blog/${cleanSlug}`;
+        return `/${collection}/${cleanSlug}`;
     }
-    return `/${locale}/blog/${cleanSlug}`;
+    return `/${locale}/${collection}/${cleanSlug}`;
 }
 ---
 
@@ -49,7 +54,11 @@ function getPostUrl(locale: Locale, slug: string): string {
                 {otherTranslations.map(([locale, post], i) => (
                     <>
                         <a
-                            href={getPostUrl(locale as Locale, post.slug)}
+                            href={getPostUrl(
+                                locale as Locale,
+                                post.slug,
+                                post.collection,
+                            )}
                             class="inline-flex items-center gap-1 ml-2 underline underline-offset-2 hover:text-black dark:hover:text-white transition-colors"
                         >
                             <span>{langFlags[locale as Locale]}</span>

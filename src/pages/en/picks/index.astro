@@ -1,0 +1,101 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import { PICKS_EN } from "@consts";
+
+const allPicks = await getCollection("picks");
+const collection = allPicks.filter((item) => {
+    const lang = item.data.lang || "ko";
+    return lang === "en";
+});
+
+collection.sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+
+const picks = await Promise.all(
+    collection.map(async (item) => {
+        const { Content } = await item.render();
+        return { ...item, Content };
+    }),
+);
+
+function formatWorkDate(input: Date | string) {
+    if (typeof input === "string") return input;
+
+    const month = input.toLocaleDateString("en-US", {
+        month: "short",
+    });
+
+    const year = new Date(input).getFullYear();
+    return `${month} ${year}`;
+}
+---
+
+<PageLayout title={PICKS_EN.TITLE} description={PICKS_EN.DESCRIPTION} lang="en">
+    <TopLayout>
+        <div class="animate page-heading">
+            {PICKS_EN.TITLE}
+        </div>
+    </TopLayout>
+    <BottomLayout>
+        <ul>
+            {
+                picks.map((entry) => (
+                    <li class="animate border-b border-black/10 dark:border-white/25 mt-4 py-8 first-of-type:mt-0 first-of-type:pt-0 last-of-type:border-none">
+                        <div class="text-sm uppercase mb-4 flex gap-2">
+                            <span>{formatWorkDate(entry.data.date)}</span>
+                            <span class="text-black/50 dark:text-white/50">
+                                •
+                            </span>
+                            <span class="uppercase">{entry.data.type}</span>
+                        </div>
+                        <div class="text-black dark:text-white font-semibold flex items-center gap-2">
+                            {entry.data.url ? (
+                                <a
+                                    href={entry.data.url}
+                                    target="_blank"
+                                    class="hover:underline decoration-1 underline-offset-2"
+                                >
+                                    {entry.data.title}
+                                    <span class="text-xs ml-1">↗</span>
+                                </a>
+                            ) : (
+                                entry.data.title
+                            )}
+                        </div>
+                        {entry.data.description && (
+                            <div class="text-sm text-black/70 dark:text-white/70 mt-1">
+                                {entry.data.description}
+                            </div>
+                        )}
+                        {entry.data.thumbnail && (
+                            <div class="mt-4 rounded-lg overflow-hidden border border-black/10 dark:border-white/10">
+                                {entry.data.url ? (
+                                    <a href={entry.data.url} target="_blank">
+                                        <img
+                                            src={entry.data.thumbnail}
+                                            alt={entry.data.title}
+                                            class="w-full h-auto object-cover hover:opacity-90 transition-opacity"
+                                        />
+                                    </a>
+                                ) : (
+                                    <img
+                                        src={entry.data.thumbnail}
+                                        alt={entry.data.title}
+                                        class="w-full h-auto object-cover"
+                                    />
+                                )}
+                            </div>
+                        )}
+                        <article class="prose dark:prose-invert mt-4">
+                            <entry.Content />
+                        </article>
+                    </li>
+                ))
+            }
+        </ul>
+    </BottomLayout>
+</PageLayout>
