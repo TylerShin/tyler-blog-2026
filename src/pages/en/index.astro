@@ -1,4 +1,14 @@
----
-// Redirect /en/ to /en/blog since we don't have a localized home page yet
-return Astro.redirect("/en/blog");
----
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0;url=/en/blog" />
+    <link rel="canonical" href="https://millsh.in/en/blog" />
+    <title>Redirecting to /en/blog</title>
+  </head>
+  <body>
+    <p>
+      Redirecting to <a href="/en/blog">/en/blog</a>...
+    </p>
+  </body>
+</html>
