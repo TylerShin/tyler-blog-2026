@@ -135,6 +135,31 @@ Cloudflare Pages에서 이 Git 레포를 연결합니다.
 
 ---
 
+## 🔔 댓글 Slack 알림 설정
+
+Giscus 댓글(= GitHub Discussions 댓글)이 달릴 때 Slack으로 알림을 받을 수 있습니다.
+
+### 1⃣ Slack Incoming Webhook 생성
+
+1. Slack App 생성 후 **Incoming Webhooks** 활성화
+2. 알림 받을 채널에 Webhook 추가
+3. 발급된 Webhook URL 복사
+
+### 2⃣ GitHub Secret 등록
+
+리포지토리 → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+
+- Name: `SLACK_WEBHOOK_URL`
+- Value: 복사한 Slack Webhook URL
+
+### 3⃣ 동작 방식
+
+- 워크플로 파일: `.github/workflows/slack-comment-notify.yml`
+- 이벤트: `discussion_comment.created`
+- 대상 카테고리: `Announcements` (Giscus 기본 설정)
+
+---
+
 ## 🔐 Git 및 Obsidian 설정
 
 ### `.obsidian/` 폴더 관리

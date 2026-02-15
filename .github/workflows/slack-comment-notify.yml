@@ -1,0 +1,99 @@
+name: Notify Slack on new comment
+
+on:
+  workflow_dispatch:
+  discussion_comment:
+    types:
+      - created
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.discussion.category.name == 'Announcements'
+    steps:
+      - name: Send Slack webhook
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          script: |
+            const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+            if (!webhookUrl) {
+              core.setFailed("Missing secret: SLACK_WEBHOOK_URL");
+              return;
+            }
+
+            const isManual = context.eventName === "workflow_dispatch";
+            const discussion = context.payload.discussion;
+            const comment = context.payload.comment;
+            const actor = context.payload.sender?.login ?? "manual-test";
+
+            const discussionTitle = isManual
+              ? "Manual workflow test"
+              : (discussion?.title ?? "Untitled discussion");
+            const discussionUrl = isManual
+              ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+              : discussion?.html_url;
+            const commentText = isManual
+              ? "This is a manual Slack webhook test from GitHub Actions."
+              : (comment?.body || "");
+            const commentUrl = isManual
+              ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+              : comment?.html_url;
+
+            const payload = {
+              text: isManual ? "Manual Slack test message" : `New blog comment by @${actor}`,
+              blocks: [
+                {
+                  type: "header",
+                  text: {
+                    type: "plain_text",
+                    text: isManual ? "Manual Slack test" : "New blog comment"
+                  }
+                },
+                {
+                  type: "section",
+                  fields: [
+                    {
+                      type: "mrkdwn",
+                      text: `*Author*\n@${actor}`
+                    },
+                    {
+                      type: "mrkdwn",
+                      text: `*Discussion*\n<${discussionUrl}|${discussionTitle}>`
+                    }
+                  ]
+                },
+                {
+                  type: "section",
+                  text: {
+                    type: "mrkdwn",
+                    text: `*Comment*\n${commentText.slice(0, 1000)}`
+                  }
+                },
+                {
+                  type: "actions",
+                  elements: [
+                    {
+                      type: "button",
+                      text: {
+                        type: "plain_text",
+                        text: "Open comment"
+                      },
+                      url: commentUrl
+                    }
+                  ]
+                }
+              ]
+            };
+
+            const response = await fetch(webhookUrl, {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+              const body = await response.text();
+              core.setFailed(`Slack webhook failed: ${response.status} ${body}`);
+            }
