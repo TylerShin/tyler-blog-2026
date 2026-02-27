@@ -16,3 +16,7 @@ heroImageAlt: "Illustration of React component resilience pillars"
 3. `Make It Composition-Proof`는 `cloneElement`를 자주 쓰지 않았던 입장에서 사각지대를 보완해줬음.
 4. `Make It Portal-Proof`도 동일하게 놓치기 쉬운 경계를 점검하게 해줬음.
 5. Transition에서 animation이 지연된 업데이트(`startTransition`, `useDeferredValue`) 중심으로 트리거되는 모델은 API 학습 비용이 높고 실수하기 쉬움.
+
+## 원문
+
+- [Build Bulletproof React Components](https://shud.in/thoughts/build-bulletproof-react-components)

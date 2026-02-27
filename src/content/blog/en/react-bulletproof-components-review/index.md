@@ -16,3 +16,7 @@ heroImageAlt: "Illustration of React component resilience pillars"
 3. `Make It Composition-Proof` filled a blind spot for me since I rarely used `cloneElement` directly.
 4. `Make It Portal-Proof` did the same for portal-related edge conditions.
 5. Transition-driven animation behavior still feels too easy to misuse because it tends to rely on deferred flows (`startTransition`, `useDeferredValue`).
+
+## Original Post
+
+- [Build Bulletproof React Components](https://shud.in/thoughts/build-bulletproof-react-components)
